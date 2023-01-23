@@ -4,12 +4,12 @@ function getComputerSelection() {
     return choice[random];
 }
 
-function getPlayerSelection() {
-    let playerSelection = prompt("Type your choice: ");
-    playerSelection = playerSelection.toLowerCase();
-    return playerSelection;
+// function getPlayerSelection() {
+//     let playerSelection = prompt("Type your choice: ");
+//     playerSelection = playerSelection.toLowerCase();
+//     return playerSelection;
     
-}
+// }
 
 function playRound(computerSelection, playerSelection) {
     if (playerSelection == "rock") {
@@ -67,6 +67,20 @@ function game() {
         }
     }
 }
+
+function getPlayerSelection(e) {
+    console.log("Event pointer for " + e.target.innerText);
+    let playerSelection = e.target.innerText.toLowerCase();
+    let computerSelection = getComputerSelection().toLowerCase();
+    console.log(playRound(computerSelection, playerSelection));
+}
+
+
+const buttons = document.querySelectorAll(".button");
+buttons.forEach( button => {
+    button.addEventListener('click', getPlayerSelection);
+})
+
 // let computerSelection = getComputerSelection();
 // let playerSelection = getPlayerSelection();
 
