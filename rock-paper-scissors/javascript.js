@@ -4,11 +4,10 @@ function getComputerSelection() {
     return choice[random];
 }
 
-function getPlayerSelection() {
-    let playerSelection = prompt("Type your choice: ");
-    playerSelection = playerSelection.toLowerCase();
-    return playerSelection;
-    
+function getPlayerSelection(e) {
+    let playerSelection = e.target.innerText.toLowerCase();
+    let computerSelection = getComputerSelection().toLowerCase();
+    game(computerSelection, playerSelection);
 }
 
 function playRound(computerSelection, playerSelection) {
@@ -49,26 +48,61 @@ function playRound(computerSelection, playerSelection) {
     }
 }
 
-function game() {
-    let playerScore = 0;
-    let computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let gameResult = playRound(getComputerSelection(), getPlayerSelection());
+function game(computerSelection, playerSelection) {
+
+    let gameResult = playRound(computerSelection, playerSelection);
+    if (playerScore < 5 && computerScore < 5) {
         if (gameResult == "Player wins") {
             playerScore++;
-            console.log(gameResult + "! Player score is " + playerScore + ". Computer score is: " + computerScore);
+            refreshScore();
         }
         else if (gameResult == "Computer wins") {
             computerScore++;
-            console.log(gameResult + "! Player score is " + playerScore + ". Computer score is: " + computerScore);
+            refreshScore();
         }
         else {
-            console.log(gameResult);
+            ties++;
+            refreshScore();
         }
     }
+    
 }
+
+function refreshScore() {
+
+    if (playerScore == 5) {
+        let txt = document.createTextNode("Player wins!");
+        let results = document.querySelector(".results");
+        results.innerText = "";
+        results.style.cssText = "font-weight: 700;";
+        results.appendChild(txt);
+        playerScore++;
+
+    }
+    else if (computerScore == 5) {
+        let txt = document.createTextNode("Computer wins!");
+        let results = document.querySelector(".results");
+        results.innerText = "";
+        results.style.cssText = "font-weight: 700;";
+        results.appendChild(txt);
+        computerScore++;
+    }
+    else {
+        document.querySelector(".results").textContent = "Player score is " + playerScore + ". Computer score is: " 
+        + computerScore + ". Ties: " + ties;
+    }
+}
+
+// Adding event listeners to buttons
+const buttons = document.querySelectorAll(".button");
+buttons.forEach( button => {
+    button.addEventListener('click', getPlayerSelection);
+})
+
 // let computerSelection = getComputerSelection();
 // let playerSelection = getPlayerSelection();
 
 
-game();
+var playerScore = 0;
+var computerScore = 0;
+var ties = 0;
